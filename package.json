@@ -1,8 +1,9 @@
 {
-  "name": "js2014-slides",
-  "version": "0.0.0",
-  "description": "slides for the javascript course at FMI 2014",
-  "main": "compile.coffee",
+  "name": "js2015-slides",
+  "version": "0.0.1",
+  "description": "slides for the javascript course at FMI 2015/2016",
+  "main": "compile.js",
+  "repository": "https://github.com/FMIjs/js-lectures-2015",
   "scripts": {},
   "author": "",
   "license": "MIT",
