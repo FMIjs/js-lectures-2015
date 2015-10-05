@@ -1,4 +1,4 @@
-# JavaScript за напреднали @ ФМИ 2014/15
+# JavaScript за напреднали @ ФМИ 2015/16
 
 ```sh
 npm install
