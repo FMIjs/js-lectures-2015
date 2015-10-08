@@ -32,7 +32,7 @@
 * Примитивните типове в C++
 * Обектите, в кой да е ОО език
 * Слоеве в OSI
-* etc...
+* и др...
 
 ---
 
@@ -73,25 +73,25 @@ function Person(age, name) {
 
 ```java
 public class Person {
-  private int age;
-  private String name;
-  public int getAge() {
-    return age;
-  }
-  public void setAge(int age) {
-    this.age = age;
-  }
-  public void talk() {
-    System.out.println("I'm a person");
-  }
+    private int age;
+    private String name;
+    public int getAge() {
+        return age;
+    }
+    public void setAge(int age) {
+        this.age = age;
+    }
+    public void talk() {
+        System.out.println("I'm a person");
+    }
 }
 
 public class Developer extends Person {
-  private String[] languages;
-  @Override
-  public void talk() {
-    System.out.println("I'm a developer");
-  }
+    private String[] languages;
+    @Override
+    public void talk() {
+        System.out.println("I'm a developer");
+    }
 }
 ```
 
@@ -408,50 +408,50 @@ p.bar  === 'baz';
 
 ---
 
-# ами ако извикаме функцията без new?
+# Ако извикаме функцията без new?
 
 ```JavaScript
-function katana(){ 
-  this.isSharp = true; 
-} 
-katana(); 
+function katana(){
+  this.isSharp = true;
+}
+katana();
 assert( isSharp === true,
-  "A global object now exists with that name and value." ); 
- 
-var shuriken = { 
-  toss: function(){ 
-    this.isSharp = true; 
-  } 
-}; 
-shuriken.toss(); 
+  "A global object now exists with that name and value." );
+
+var shuriken = {
+  toss: function(){
+    this.isSharp = true;
+  }
+};
+shuriken.toss();
 assert( shuriken.isSharp === true,
   "When it's an object property, the value is set within the object." );
 
 ```
 
-...най-общо казано ще 'замърсим' контекста на извикващата функция.
+...най-общо казано ще 'замърсим' глобалния контекст с извикването на фунцкията
 
 (ref: http://ejohn.org/apps/learn/#24)
 
 ---
 
-# за да сме сигурни, че не лиспва new
+# За да сме сигурни, че не лиспва new:
 
 ```JavaScript
 
-function User(first, last){ 
-  if ( !(this instanceof arguments.callee) ) 
-    return new User(first, last); 
-   
-  this.name = first + " " + last; 
-} 
- 
-var name = "Resig"; 
-var user = User("John", name); 
+function User(first, last){
+  if (!(this instanceof User))
+    return new User(first, last);
 
-assert( user, "This was defined correctly, even if it was by mistake." ); 
+  this.name = first + " " + last;
+}
+
+var name = "Resig";
+var user = User("John", name);
+
+assert( user, "This was defined correctly, even if it was by mistake." );
 assert( name == "Resig", "The right name was maintained." );
- 
+
 ```
 
 (ref: http://ejohn.org/apps/learn/#38)
@@ -517,8 +517,8 @@ var bar = foo.bind(this, 1, 2);
 bar = bar(3); //6
 ```
 
-* тоест функцията bar ще бъде винаги в конкретен контекст
-* и ще получава винаги първите два параметъра тично определени
+* Тоест функцията bar ще бъде винаги в конкретен контекст
+* И ще получава винаги първите два параметъра тично определени
 
 ---
 
@@ -531,7 +531,7 @@ bar = bar(3); //6
 
 # Нека разгледаме примера по-подробно...
 
-```JavaScript
+```javascript
 // Дефинира конструкторна функция
 function Person(name) {
   // Добавя property name към всеки обект създаден
@@ -550,7 +550,7 @@ Person.prototype.getName = function () {
 
 ---
 
-```JavaScript
+```javascript
 function Developer(age, name) {
   // Извиква функцията Person с контекст (this)
   // обектът, който ще бъде върнат от тази функция след
@@ -593,9 +593,9 @@ console.log(Object.keys(d)); // ['foo']
 
 ```
 
-* през всеки обект имаме достъп до прототипа, чрез __proto__
-* при първото задаване на стойност за дадено property се създава такова 'конкретно' за обекта и вече се ползва само то
-* при инстанциране на обекта той де факто няма property-та и Object.keys връща празен списък, но имена които могат да се открият в прототипа се дават като property-та.
+* През всеки обект имаме достъп до прототипа, чрез __proto__
+* При първото задаване на стойност за дадено property се създава такова 'конкретно' за обекта и вече се ползва само то
+* При инстанциране на обекта той де факто няма property-та и Object.keys връща празен списък, но имена които могат да се открият в прототипа се дават като property-та.
 
 ```
 ---
@@ -620,7 +620,7 @@ Object.getPrototypeOf(d) === d.__proto__
 
 # Обект наследяващ от конструкторна функция
 
-```JavaScript
+```javascript
 var awesomeEventHandler = {};
 EventEmitter.call(awesomeEventHandler);
 Object.setPrototypeOf(awesomeEventHandler, EventEmitter.prototype);
@@ -639,7 +639,7 @@ awesomeEventHandler.trigger('event');
 
 # Проблемът при използване на прототипи
 
-```JavaScript
+```javascript
 var sibling1, sibling2;
 
 inherit(sibling1, parent);
@@ -683,7 +683,7 @@ extend(simpleToBecomeAwesomeObject, awesomeFunctionality);
 
 # Mixins - deep copy
 
-```JavaScript
+```javascript
 var awesomeFunctionality = {
   baz: 1.618,
   foo: {
@@ -705,7 +705,7 @@ console.log(sibling2.foo.bar); //42
 
 # Mixins - deep copy
 
-```JavaScript
+```javascript
 var awesomeFunctionality = {
   baz: 1.618,
   foo: {
@@ -727,23 +727,23 @@ console.log(sibling2.foo.bar); //13
 
 # Конструкторите в JS са излишни ?
 
-``` JavaScript
+``` javascript
 var myPrototype = {
   methodA: function methodA() {},
   methodB: function methodB() {},
   methodC: function methodC() {}
 };
- 
+
 var createFoo = function createFoo() {
   return (Object.create(myPrototype));
 };
 ```
 
-* можем да създаваме нови обекти с `Object.create`
-* спасяваме се от доста 'new' бъгове
-* спираме да си мислим за JS като за Java
-* създаваме по-добра предпоставка за полиморфизъм
-* лесно можем да въведем Factory шаблон
+* Можем да създаваме нови обекти с `Object.create`
+* Спасяваме се от доста 'new' бъгове
+* Спираме да си мислим за JS като за Java
+* Създаваме по-добра предпоставка за полиморфизъм
+* Лесно можем да въведем Factory шаблон
 
 (ref: http://ericleads.com/2012/09/stop-using-constructor-functions-in-javascript/)
 
@@ -752,8 +752,8 @@ var createFoo = function createFoo() {
 # Polyfill за Object.create
 
 * Object.create не се поддържа в IE6-8
-* може лесно да се 'запълни' пропуска
-* ... или чрез es5-shim
+* Може лесно да се 'запълни' пропуска
+* ...или чрез es5-shim
 
 (ref: https://github.com/es-shims/es5-shim)
 
