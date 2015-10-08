@@ -47,9 +47,9 @@
 ## Числа
 
 ```javascript
-    > var low_boundary = 9000;
+    > var lowBoundary = 9000;
     undefined
-    > typeof low_boundary
+    > typeof lowBoundary
     'number'
     > var pi = 3.14;
     undefined
@@ -182,13 +182,6 @@
 * Не, няма смисъл да спорим
 * Повече по този въпрос после
 * Има няколко други механизъма за итериране, които са в духа на JavaScript
-
----
-# За разнообразие
-### linter-и(мъхясване?)
-
- * jslint/jshint
- * Интегрират се с всяка разумна среда
 
 ***
 
