@@ -209,14 +209,6 @@
 * Повече по този въпрос после
 * Има няколко други механизъма за итериране, които са в духа на JavaScript
 
-***
-
- * vim - [syntastic](https://github.com/scrooloose/syntastic)
- * emacs - [flycheck](http://www.emacswiki.org/emacs/Flycheck)
- * sublime text - [sublime-jslint](http://opensourcehacker.com/2012/04/12/jslint-integration-for-sublime-text-2/)
- * atom - [atom-jslint](https://atom.io/packages/atom-jshint)
- * ако не сте си писали редактора сами най-вероятно има разумен начин да подкарате linter с него.
-
 ---
 
 # По-подробно за списъци
