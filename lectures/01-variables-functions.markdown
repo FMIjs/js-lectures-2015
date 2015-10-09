@@ -332,6 +332,85 @@
 Сложността на операциите върху `Array` обекти най-вероятно не е каквато очаквате. За това има [много добро обяснение](http://stackoverflow.com/questions/11514308/big-o-of-javascript-arrays#answer-11535121).
 
 **TL;DR** Списъците са обекти, обектите са хешове.
+---
+# Javascript runtime (v8)
+
+---
+# Какво представлява?
+![alt text](../html/img/runtime.png "runtime image")
+---
+# Stacking
+
+javascript
+    function f(b){
+        var a = 12;
+        return a+b+35;
+    }
+
+
+    function g(x){
+        var m = 4;
+        return f(m*x); //f се слага в stack
+    }
+
+    g(21); //g се слага в stack
+
+
+* Когато имаме function call push-ваме в stack-а.
+* Когато функцияна приключи pop-ваме от stack-а.
+
+---
+#Javascript is single threaded
+---
+# Какво се случва, когато възникне event докато Stack-a е пълен?
+---
+![alt text](../html/img/event_loop.png "event loop image")
+* Koгато stack-а Е ПРАЗЕН Event loop-а чете от TaskQueue-то
+и ако има task го push-ва в stack-а.
+---
+
+## Pushing tasks
+
+* В browser-а съобщения се добавят, когато възникне някакъв event и
+имаме event handler за него. (webAPIs -> addEventListener)
+
+* Също setTimeout(), process.nextTick() и др.
+
+javascript
+ setTimeout(function(){ alert(1); }, 1000) //Изпълни се след минимум 1 сек
+
+
+setTimeout е функция на браузъра (Web APIs). Когато я извикаме browser-а пускай timer и след изтичането му
+callback-а се push-ва в TaskQueue. Подобно е и когано правим ajax requests.
+
+
+javascript
+setTimeout(function(){ alert(1); }, 0)
+// Може да си мислим като - TaskQueue.push(function(){ alert(1); })
+
+
+* Важно е да пешем non-blocking code!
+
+* Трябва да се внимава с for, while, forEach защото са синхронни.
+
+* Render Queue също зависи от javascript.
+Не можем да рендерираме, когато имаме функции в stack-а.Render Queue има
+по-високо priority от callback-овете, които слагаме в TaskQueue.
+---
+### Blocking the event loop
+
+javascript
+var fs = require('fs'); //require the module for file system ops
+
+var file = fs.readFileSync('./myBigFile'); //synchronously read file
+
+
+Това блокира thread-а докато целия файл не бъде прочетен.
+
+Решението е fs.readFile(filepath, callback), което чете файла
+на малки парчета (chunks) и след това извиква
+callback-а с прочетения файл като аргумент.
+
 
 ---
 # За разнообразие и по нужда
