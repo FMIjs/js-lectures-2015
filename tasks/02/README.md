@@ -52,7 +52,7 @@ curried(6, 6)(6, 6);
 
 ```javascript
   var number = compose(Math.round, parseFloat);
-  number(66.6)
+  number('66.6')
   > 67
 
 ```
