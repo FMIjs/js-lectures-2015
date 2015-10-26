@@ -1,7 +1,7 @@
 I. Разширете прототипа на Array с функция myMap, която прилага функция към всеки елемент от масива и връща нов списък с резултата.
 
 ```javascript
-[1,2,3,4,5,6,7,8,9].mymap(function(el){ return el + 10; }); // -> [11,12,13,14,15,16,17,18,19]
+[1,2,3,4,5,6,7,8,9].myMap(function(el){ return el + 10; }); // -> [11,12,13,14,15,16,17,18,19]
 ```
 
 II. Напишете конструктор Vehicle, който взима един аргумент mileage, което е private свойство на обекта. Vehicle има следните методи: getMileage и toString.
@@ -21,7 +21,7 @@ var c1 = new Car('honda', 5);
 c1.getMileage(); // -> 0
 c1.toString(); // -> honda 5 This Vehicle mileage is 0
 c1.drive(1000);
-c1.getmileage(); // -> 1000
+c1.getMileage(); // -> 1000
 c1.toString(); // -> honda 5 This Vehicle mileage is 1000
 
 ```
