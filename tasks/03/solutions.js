@@ -49,16 +49,17 @@ function Vehicle(mileage){
         return mileage.val;
     };
 
+    this.tostring = function(){
+        return 'This Vehicle mileage is ' + mileage.val;
+    };
+
 }
 
-Vehicle.prototype.toString = function(){
-    return 'This Vehicle mileage is ' + this.getMileage();
-};
 
 function Car(brand, consumption){
     var mileage = { val: 0 };
     Vehicle.call(this, mileage);
-    var superToString = this.toString;
+    var superToString = this.tostring;
 
     this.drive = function(miles){
         mileage.val += miles;
@@ -72,17 +73,17 @@ function Car(brand, consumption){
         return consumption;
     };
 
-    this.toString = function(){
+    this.tostring = function(){
        return brand + ' ' + consumption + ' ' + superToString();
     };
 }
 
 var c1 = new Car('honda', 5);
 console.log(c1.getMileage()); // -> 0
-console.log(c1.toString()); // -> honda 5 This Vehicle mileage is 0
-console.log(c1.drive(1000));
+console.log(c1.tostring()); // -> honda 5 This Vehicle mileage is 0
+c1.drive(1000);
 console.log(c1.getMileage()); // -> 1000
-console.log(c1.toString()); // -> honda 5 This Vehicle mileage is 1000
+console.log(c1.tostring()); // -> honda 5 This Vehicle mileage is 1000
 
 
 
