@@ -373,7 +373,7 @@ var foo = {
 
 ```javascript
 var obj = {
-  [`guessWhatI'llBe${Math.random()}`]: 42
+  [\`guessWhatI'llBe${Math.random()}\`]: 42
 };
 ```
 
@@ -551,7 +551,7 @@ class Developer extends Person {
     this.languages = langs;
   }
   talk() {
-    return super.talk() + ` and knows ${this.languages.join(', ')}`;
+    return super.talk() + \` and knows ${this.languages.join(', ')}\`;
   }
   // ...
 }
