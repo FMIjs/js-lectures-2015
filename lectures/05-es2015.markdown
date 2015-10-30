@@ -302,7 +302,7 @@ addOne(41) // 42
 
 ---
 
-# Functional lexical scope
+# Block lexical scope
 
 ---
 
@@ -492,13 +492,13 @@ class Person {
   static totalPeople = 0;
   constructor(name) {
     Person.totalPeople += 1;
-    this.name = name;
+    this._name = name;
   }
   set name(name) {
     this._name = name;
   }
   get name() {
-    return name;
+    return this._name;
   }
 }
 ```
@@ -515,7 +515,7 @@ var Person = (function () {
   function Person(name) {
     _classCallCheck(this, Person);
     Person.totalPeople += 1;
-    this.name = name;
+    this._name = name;
   }
   _createClass(Person, [{
     key: "name",
@@ -523,7 +523,7 @@ var Person = (function () {
       this._name = name;
     },
     get: function get() {
-      return name;
+      return this._name;
     }
   }]);
   return Person;
