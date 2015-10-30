@@ -717,7 +717,7 @@ function *countTo(n) {
   }
 }
 
-let generator = countTo(3)
+let generator = countTo(3);
 generator.next(); // { done: false, value: 0 }
 generator.next(); // { done: false, value: 1 }
 generator.next(); // { done: false, value: 2 }
@@ -736,7 +736,7 @@ function *countTo(n) {
   }
 }
 
-let generator = countTo(3)
+let generator = countTo(3);
 let res = generator.next();
 res = generator.next(!(res.value % 2));
 res = generator.next(!(res.value % 2));
