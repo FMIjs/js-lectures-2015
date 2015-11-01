@@ -771,4 +771,11 @@ for (var val of foo) {
   console.log(val);
 }
 ```
+---
 
+## Ресурси
+
+- [Immutable.js](https://facebook.github.io/immutable-js/)
+- [A generator-based sequence generator and utility.](https://github.com/nmn/Grunge)
+- [Минимална имплементация на promises](https://gist.github.com/mgechev/afbf6a5802b8fa55d79c)
+- [IterJS](https://github.com/abozhilov/IterJS)
