@@ -1,0 +1,781 @@
+# ES2015
+
+### 2015/2016
+
+---
+# ES2015
+
+Последната финализирана версия на ECMAScript. Преди няколко месеца беше известен като ES6, но поради желанието на TC39 да прави годишни итерации с цел разширяване на езика, бе преименуван на ES2015.
+
+---
+
+# ES2015 включва неща като...
+
+- Block lexical scope
+- Classes
+- Promises
+- Generators
+- Iterators
+- Enhanced object literals
+- Destructuring
+- Arrow functions
+
+---
+
+# Преди да се забавляваме с ES2015...
+## нека обърнем внимание на ES5...
+
+---
+
+# Property descriptors
+
+---
+
+```javascript
+Object.defineProperty(obj, 'propName', descriptor);
+```
+
+---
+
+## Стойности по подразбиране
+
+```javascript
+var descriptor = {
+  configurable: false,
+  enumerable: false,
+  value: undefined,
+  writable: false,
+  get: undefined,
+  set: undefined
+};
+```
+
+---
+
+## Семантика
+
+- `configurable` - при стойност `true` даденото поле на обекта може да бъде изтрито и/или преконфигурирано (т.е. можем да променим дескриптора)
+- `enumerable` - при стойност `true` даденото поле може да бъде енумерирано (например, обходено с `for...in` или получено през `Object.keys`)
+- `value` - стойност на полето
+- `writable` - при `true` стойността на полете може да бъде променяна с оператор `=`
+- `get` - връща стойността на полето (не може да живее заедно с `value`)
+- `set` - задава стойност на полето (не може да живее заедно с `value`)
+
+---
+
+# Immutable обекти
+
+Immutable е обект, който не може да бъде променян след създаването си.
+
+---
+
+## Защо immutable data rulez?
+
+- Конкурентно програмиране (няма проблеми с конкурентно модифициране на данни)
+- Няма промяна в състоянието (не могат да възникнат бъгове от неконсистентно състояние)
+
+---
+
+# `Object.freeze` & `Object.seal`
+
+---
+
+## `Object.seal`
+
+Забранява добавянето на нови полета към даден обект. Прави всички налични полета на обекта `non-configurable`
+
+```javascript
+var foo = { bar: 42 };
+Object.seal(foo);
+
+foo.bar = 43;
+console.log(foo.bar); // 43
+
+foo.baz = 1.618;
+console.log(foo.baz); // undefined
+```
+---
+
+## `Object.freeze`
+
+Забранява добавянето и изтриването на съществуващи полета на даден обект. Прави полетата на обекта `non-writable` & `non-configurable`.
+
+```javascript
+var foo = { bar: 42 };
+Object.freeze(foo);
+
+foo.bar = 43;
+console.log(foo.bar); // 42
+
+foo.baz = 1.618;
+console.log(foo.baz); // undefined
+```
+---
+
+## С други думи:
+
+```javascript
+var foo = { bar : 42 };
+Object.getOwnPropertyDescriptor(foo, 'bar');
+// Object { value: 42, writable: true, enumerable: true, configurable: true }
+
+Object.freeze(foo);
+// Object { value: 42, writable: false, enumerable: true, configurable: false }
+```
+
+---
+
+## Какво ще се случи:
+
+```javascript
+var foo = { bar: { baz: 42 } };
+
+Object.freeze(foo);
+foo.bar = { foobar: 12 };
+foo.bar.baz = 1.618;
+
+console.log(foo.bar);
+console.log(foo.bar.baz);
+```
+---
+
+# Strict mode
+
+```javascript
+'use strict';
+
+// Now you're in strict mode...
+```
+
+---
+
+## Какво означава да си в strict mode...
+
+Имаме редица ограничения, които са създадении с цел:
+
+- Избягване на често допускани грешки
+- Оптимизация на кода, който пишем от виртуалната машина
+- По-лесна миграция към нови стандарти
+
+---
+
+Забранено е дефинирането на променливи без ключова дума, която експлицитно задава това (`var`, `let`):
+
+```javascript
+'use strict';
+
+foo = 42;
+```
+---
+
+## Strict mode
+### не ви позволява да нарушавате предварително зададени правила...
+
+```javascript
+'use strict';
+var foo = { bar: 42 };
+Object.freeze(foo);
+foo.bar = 43; // thorws
+```
+---
+
+## Аргументи с еднакво име...
+
+```javascript
+function foo(a, a, b) {
+  return a + b;
+}
+// Argument name clash in strict mode
+
+```
+---
+## Какъв мислите, че ще бъде резултатът от:
+
+```javascript
+function f(a) {
+  a = 1.618;
+  return [a, arguments[0]];
+}
+console.log(f(42));
+```
+---
+## Strict mode оправя това...
+
+```javascript
+function f(a) {
+  a = 1.618;
+  return [a, arguments[0]];
+}
+console.log(f(42)); // [1.168, 42]
+```
+---
+## Без use strict...
+
+```javascript
+function a() {
+  return this;
+}
+console.log(this); // ?
+```
+---
+## С 'use strict'...
+
+```javascript
+function a() {
+  'use strict';
+  return this;
+}
+console.log(this); // undefined
+```
+---
+
+## Без повече `fn.caller` & `fn.arguments`
+
+```javascript
+function foo() {
+  console.log(foo.arguments); // []
+  console.log(foo.caller); // undefined
+}
+
+foo();
+```
+
+###...но с `use strict`...
+
+```javascript
+function foo() {
+  console.log(foo.arguments);
+  console.log(foo.caller);
+}
+
+foo();
+// 'caller' and 'arguments' are restricted function properties
+```
+---
+
+# ES2015!
+
+---
+
+# TCO (tail call optimization)
+
+---
+
+## Опашъчна рекурсия
+
+![](../html/img/tailfact.png)
+
+### Как да я оптимизираме?
+
+---
+
+## Оптимизацията е валидна за всички tail calls:
+
+```javascript
+function id(a) {
+  return a;
+}
+function sum(a, b) {
+  return id(a + b);
+}
+function addOne(a) {
+  return sum(a, 1);
+}
+
+addOne(41) // 42
+```
+
+### Call stack
+
+```
++---------+
+|   id    |
++---------+
+|  sum    |
++---------+
+| addOne  |
++---------+
+```
+---
+
+## Защо `use strict` забранява `fn.caller`?
+
+---
+
+# Block lexical scope
+
+---
+
+## Какво знаем...
+
+```javascript
+if (true) {
+  var answer = 42;
+  if (answer === 42) {
+    console.log("You got the answer: " + answer);
+  }
+}
+if (true) {
+  console.log(answer); // 42
+}
+```
+---
+
+# Block lexical scope
+
+```javascript
+if (true) {
+  let answer = 42;
+  if (answer === 42) {
+    console.log("You got the answer: " + answer);
+  }
+}
+if (true) {
+  console.log(answer); // dead kittie
+}
+```
+---
+
+# Enhanced object literals
+
+---
+
+## Как дефинирахме object literals в миналото...
+
+```javascript
+var bar = 42;
+var talk = function (words) { ... };
+var foo = {
+  bar: bar,
+  talk: talk,
+  walk: function (distance) {
+    // do stuff
+  }
+};
+```
+
+## Как го правим сега?
+
+```javascript
+var bar = 42;
+var talk = function (words) { ... };
+var foo = {
+  bar,
+  talk,
+  walk(distance) {
+    // do stuff
+  }
+};
+```
+---
+
+## Изчисляеми полета
+
+```javascript
+var obj = {
+  [\`guessWhatI'llBe${Math.random()}\`]: 42
+};
+```
+
+---
+
+# Destructuring
+
+---
+
+## Как извличахме полетата на обект преди?
+
+```javascript
+function foobar(config) {
+  var name = config.name;
+  var age = config.age;
+  var gitHubHandle = config.socialMedia.gitHubHandle;
+  // ...do stuff
+}
+```
+
+---
+
+## Как го правим сега...
+
+```javascript
+function foobar(config) {
+  var { name, age, socialmedia: { githubHandle } } = config;
+  // ...do stuff
+}
+```
+## или...
+
+```javascript
+function foobar({ name, age, socialmedia: { githubHandle } }) {
+  // ...do stuff
+}
+```
+---
+
+# Arrow functions
+
+---
+
+## Функции от по-висок ред (super quick recap)
+
+```javascript
+var sum = [1, 2, 3].reduce(function (a, c) {
+  return a + c;
+}, 0);
+
+var sorted = obj.sort(function (a, b) {
+  var ageDif = a.age - b.age;
+  if (ageDif !== 0) {
+    return ageDif;
+  } else {
+    return a.height - b.height;
+  }
+});
+```
+---
+
+## High-order arrow functions
+
+```javascript
+var sum = [1, 2, 3].reduce((a, c) => a + c, 0);
+var sorted = obj.sort((a, b) => {
+  let ageDif = a.age - b.age;
+  if (ageDif !== 0) {
+    return ageDif;
+  } else {
+    return a.height - b.height;
+  }
+});
+```
+---
+
+## Запазват `this` на заобикалящия ги код!
+
+```javascript
+function MyHero() {
+  var self = this;
+  setTimeout(function () {
+    this.startSuperPowers();
+  }, 1000);
+}
+new MyHero();
+```
+
+```javascript
+function MyHero() {
+  var self = this;
+  setTimeout(() => {
+    this.startSuperPowers();
+  }, 1000);
+}
+new MyHero();
+```
+---
+# Класове
+---
+
+## Защо са ни нужни?
+### ...много хора ги мразят...
+
+- Оптимизации от виртуалната машина
+- По-кратък learning curve
+  - Повечето популярни езици за програмиране ги поддържат
+  - Добре известна семантика
+- Те са просто syntax sugar
+
+---
+## Синтаксис:
+
+```javascript
+class Person {
+  static totalPeople = 0;
+  constructor(name) {
+    Person.totalPeople += 1;
+    this._name = name;
+  }
+  set name(name) {
+    this._name = name;
+  }
+  get name() {
+    return this._name;
+  }
+}
+```
+---
+## Транслира се до нещо от рода на:
+
+```javascript
+var Person = (function () {
+  _createClass(Person, null, [{
+    key: "totalPeople",
+    value: 0,
+    enumerable: true
+  }]);
+  function Person(name) {
+    _classCallCheck(this, Person);
+    Person.totalPeople += 1;
+    this._name = name;
+  }
+  _createClass(Person, [{
+    key: "name",
+    set: function set(name) {
+      this._name = name;
+    },
+    get: function get() {
+      return this._name;
+    }
+  }]);
+  return Person;
+})();
+```
+---
+## Следните особености:
+
+- Не съществува преди изпълнение на кода за неговата дефиниция
+- Има само 1 конструктор (защо?)
+- Всички методи са добавени към прототипа и са `nonenumerable`
+- `set` и `get` се използват за създаване на setters и getters
+- Няма модификатори за видимост (към момента)
+- Всички статични полета се добавят като полета на конструкторната функция
+---
+
+## Extends...
+
+```javascript
+class Person { ... }
+
+class Developer extends Person {
+  constructor(name, langs) {
+    super(name);
+    this.languages = langs;
+  }
+  talk() {
+    return super.talk() + \` and knows ${this.languages.join(', ')}\`;
+  }
+  // ...
+}
+```
+---
+# Promises
+---
+
+## Какво е callback hell?
+
+![](./img/callback-hell.png)
+
+---
+
+## Задача...
+
+Искаме да заредим всички потребители, които са зададени в JSON файл.
+
+Във файла имаме списък с JSON файлове, които представляват отделните потребители.
+
+Имаме дефинирана функция `getJSON(file, cb)`. `cb` ще бъде изпълнен с резултатът от заявката, когато тя приключи.
+
+---
+
+## Решение с callbacks
+
+```javascript
+function loadUsers() {
+  getJSON('users.json', function (users) {
+    console.log(users.group);
+    users.users_list.forEach(function (u) {
+      getJSON(u, function (user) {
+        console.log(user);
+      }, function (error) {
+        console.error(error);
+      });
+    });
+  }, function (error) {
+    console.error(error);
+  });
+}
+```
+---
+## Решение с promises
+
+Вместо функцията да приема callback като аргумент може да връща обект, които да има метод, който приема функция и да връща обект от същия тип. Тази функция ще бъде извикана веднъж, когато асинхронното действие бъде приключено.
+
+---
+
+## Promises
+
+```javascript
+function loadUsers() {
+  getJSON('users.json')
+  .then(function (data) {
+    console.log(data.group);
+    Promise.all(data.users_list.map(getJSON))
+    .then(function (users) {
+      console.log(users);
+    });
+  });
+}
+```
+---
+## Нека го разгледаме стъпка по стъпка...
+
+### Стъпка 1
+
+```javascript
+function loadUsers() {
+  getJSON('users.json')
+  .then(function (data) {
+    // ...
+    // Ще бъде извикана, когато имаме
+    // получен отговор от заявката: GET users.json
+    // ...
+  });
+}
+```
+
+---
+
+### Стъпка 2
+
+```javascript
+// ...
+.then(function (data) {
+  // Ще извика функцията getJSON с всеки един от файловете
+  // които сме получили като резултат от заявката до
+  // users.json, намиращи се в users_list
+  Promise.all(data.users_list.map(getJSON))
+});
+// ...
+```
+---
+
+### Стъпка 3
+
+```javascript
+// На Promise.all ще подадем масив от обекти от тип Promise
+// т.е. ще имат then метод, към който можем да
+// закачим callback.
+Promise.all(data.users_list.map(getJSON))
+```
+---
+
+### Стъпка 4
+```javascript
+// Promise.all ще върне нов обект от тип Promise
+// чийто callback ще бъде извикан, веднъж когато
+// всички Promise обекти от масива са получили стойност.
+Promise.all(data.users_list.map(getJSON))
+.then(function (users) {
+  // масив с всички резултати, с които
+  // callback на promises от масива върнат
+  // от map са извикани
+});
+```
+---
+
+## Promises не са нова идея...
+
+> The future and/or promise constructs were first implemented in programming languages such as MultiLisp and Act 1.
+
+### Multilisp
+
+> It was designed by Robert H. Halstead in the early 1980s
+---
+
+## Chaining promises
+
+```javascript
+asyncFunction()
+  // ще бъде извикана веднъж, когато
+  // изпълнението на asyncFunction е довело до резултат
+  .then(result => {
+    return anotherAsyncFunction(result);
+  })
+  // Ще бъде извикана веднъж, когато promise
+  // върнат от anotherAsyncFunction има стойност
+  // (т.е. когато изпълнението на асинхронната функция
+  // anotherAsyncFunction е довело до резултат)
+  .then(anotherResult => {
+    return thirdAsyncFunction(anotherResult);
+  })
+  // ...
+  .then(result => {
+    // final result
+  });
+```
+---
+
+# Генератори
+
+---
+
+## Генераторът е функция, която връща множество резултати
+
+```javascript
+function *countTo(n) {
+  for (let i = 0; i < n; i += 1) {
+    yield i;
+  }
+}
+
+let generator = countTo(3);
+generator.next(); // { done: false, value: 0 }
+generator.next(); // { done: false, value: 1 }
+generator.next(); // { done: false, value: 2 }
+generator.next(); // { done: true, value: undefined }
+```
+
+---
+
+## Подаване на стойност на генератора:
+
+```javascript
+function *countTo(n) {
+  for (let i = 0; i < n; i += 1) {
+    let isEven = yield i;
+    console.log(i, (isEven) ? 'is' : 'isn\'t', 'even.');
+  }
+}
+
+let generator = countTo(3);
+let res = generator.next();
+res = generator.next(!(res.value % 2));
+res = generator.next(!(res.value % 2));
+res = generator.next(!(res.value % 2));
+
+```
+---
+
+## По време на следващото упражнение ще си поиграе(те|м) с Promises & Generators
+
+---
+
+# Итератори
+
+---
+
+## Дефиниция на итератор
+
+```javascript
+var foo = {};
+foo[Symbol.iterator] = function * () {
+  for (var i = 0; i < 5; i += 1) {
+    yield i;
+  }
+};
+```
+
+...и можем да го обходим с:
+
+```javascript
+for (var val of foo) {
+  console.log(val);
+}
+```
+---
+
+## Ресурси
+
+- [Immutable.js](https://facebook.github.io/immutable-js/)
+- [A generator-based sequence generator and utility.](https://github.com/nmn/Grunge)
+- [Минимална имплементация на promises](https://gist.github.com/mgechev/afbf6a5802b8fa55d79c)
+- [IterJS](https://github.com/abozhilov/IterJS)
