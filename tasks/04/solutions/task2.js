@@ -6,7 +6,6 @@ var fs = require('fs');
 
 //Because we dont have an async operation here the better solution to return a resolved Promise 
 //instead of creating a new promise like readFile and writeFile and resolving it inside
-
 function getRandomString(data) {
     data = data || {}; //if data is undefined or null assign an empry object
     data.string = Math.random().toString(36).substring(7);
