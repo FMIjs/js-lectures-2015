@@ -1,21 +1,17 @@
 var fs = require('fs');
 var promisify = require('es6-promisify');
-
 var _readFile = promisify(fs.readFile);
 var _writeFile = promisify(fs.writeFile);
-
 var text1;
 
 function wait(time) {
-  return new Promise((resolve, reject) => {
-    return setTimeout(resolve, time);
-  });
+  return new Promise(res => setTimeout(res, time));
 }
 
 wait(1000)
-  .then(() => _writeFile('hello.txt', 'alabala', 'utf8'))
+  .then(() => _writeFile('hello.txt', 'text of file I', 'utf8'))
   .then(() => wait(1000))
-  .then(() => _writeFile('hello2.txt', 'akabaka', 'utf8'))
+  .then(() => _writeFile('hello2.txt', 'text of file II', 'utf8'))
   .then(() => wait(1000))
   .then(() => _readFile('hello.txt'))
   .then((txt) => text1 = txt)
