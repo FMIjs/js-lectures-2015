@@ -158,7 +158,7 @@ upon the implementation that gives rise to this behavior...
 
 ---
 
-# How what about JavaScript?
+# Now what about JavaScript?
 
 ---
 
