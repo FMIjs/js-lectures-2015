@@ -53,7 +53,7 @@ class: middle, center
 * v8 компилира Javascript директно до машинни инструкции (unoptimized native code) преди изпълнението му.
 (Няма никакво интерпретиране и bytecode)
 
-* Функциите не се компилират докато не бъдат извикани, което е хубаво защото виртуалната машина не губи време големи библиотеки
+* Функциите не се компилират докато не бъдат извикани, което е хубаво защото виртуалната машина не губи време за големи библиотеки
 
 * След компилирането се пуска profiler, който избира "hot" функции, които да бъдат оптимизирани от Crankshaft (optimization compiler)
 
@@ -76,7 +76,7 @@ class: middle, center
 
 * 2011 година излиза npm 
 
-* 2012 Ryan Dahl се оттегла от проекта 
+* 2012 Ryan Dahl се оттегля от проекта 
 
 * 2014 поради вътрешен конфликт излиза форк на node с името io.js 
 
@@ -87,7 +87,7 @@ class: middle, center
 
 * v8 event loop се грижи за javascript и C++ модулите, които работят в main thread-а.
 
-* Ако нещо работи извън main thread-а libev и libuv го обработват в thread pool. libev прави връзката с main thread-а.
+* Ако нещо работи извън main thread-а libev и libuv го обработват в thread pool. libuv прави връзката с main thread-а.
 
 <img src='../html/img/io_callback.png'>
 ---
@@ -103,7 +103,7 @@ saveData(myData, callback);
 
 ```
 
-* callback функцията е винаги последния аргумент, който се подава на асинхронната функция.
+* callback функцията е винаги последният аргумент, който се подава на асинхронната функция.
 
 * Първата стойност, която се подава на callback функцията е винаги error.
 ---
@@ -166,12 +166,12 @@ module.exports.bar = function() {
 
 * При сваляне на приложението от github посто трябва да напишем npm install или накратко npm i за да се свалят всички dependency-та от package.json.
 
-* Понякога искаме модулите да се свалят глобално за да можем да ги използваме навсякъде. Тогава използваме npm install module_name -g.
+* Понякога искаме модулите да се свалят глобално, за да можем да ги използваме навсякъде. Тогава използваме npm install module_name -g.
 
 ---
 ###Events 
 
-* Събитиято ни дават друг начин, по който можем да пишем асинхронни операции.
+* Събитията ни дават друг начин, по който можем да пишем асинхронни операции.
 
 ```javascript
 //Callback example
@@ -194,7 +194,7 @@ userData.on('item', function(item) {
     //Do stuff
 });
 ```
-Тук казваме, че всеки път когато възникне евент с име data, трябва да се изпълни тази функция. Ако искаме да се изпълни само веднъж използваме once.
+Тук казваме, че всеки път когато възникне евент с име data, трябва да се изпълни тази функция. Ако искаме да се изпълни само веднъж, използваме once.
 
 ---
 ###Custom Event Emitters (1)
@@ -230,7 +230,7 @@ CustomEmitter.prototype.connect = function() {
     }, 5000);
 };
 
-util.inhertis(CustomEmitter, EventEmitter);
+util.inherits(CustomEmitter, EventEmitter);
 module.exports = CustomEmitter;
 ```
 ```javascript
@@ -249,7 +249,7 @@ cm.connect();
 
 * Потоците разширяват EventEmitter.
 
-* Те представляват абстракция за менажиране на data flow. ( Network traffic, File I/O ...)
+* Те представляват абстракция за менажиране на data flow. (Network traffic, File I/O ...)
 
 * Може да правим 3 типа потоци: Readable, Writable, Transform (Readable and Writable)
 
@@ -283,7 +283,7 @@ cm.connect();
         <li>event 'unpipe'</li>
         <li>write(chunk)</li>
         <li>cork() (force buffering of all writes)</li>
-        <li>uncork() (flush all buffered data sicne cork call)</li>
+        <li>uncork() (flush all buffered data since cork call)</li>
         <li>end() (call this when we don't need more data)</li>
         <li>setDefaultEncoding(encoding)</li>
     </ul>
@@ -449,12 +449,12 @@ class: middle, center
 [More about Streams](https://github.com/substack/stream-handbook)
 ---
 ### Buffers
-Когато четем от файлове или работим с мрежата ние получаваме сурова(raw) памет, която е извън v8 heap-а. Buffer-а представлява mapping (handle) между тази памет и JS Array.
-v8 няма контрол върху тази памет, за това този mapping, който се създава позволява на libuv да деалокира суровата памет след като Garbage Collector-а (GC) премахне нашия buffer.
+Когато четем от файлове или работим с мрежата ние получаваме сурова (raw) памет, която е извън v8 heap-а. Buffer-ът представлява mapping (handle) между тази памет и JS Array.
+v8 няма контрол върху тази памет, за това този mapping, който се създава, позволява на libuv да деалокира суровата памет след като Garbage Collector-а (GC) премахне нашия buffer.
 
 Buffer-ите могат да бъдат гадни! 
 
-Нека си представим, че pre-alloc-ираме голямо парче памет (fs.readFile без encoding)и след това разбием тази памет на малки парчета към конкретни JS обекти. Какво ще се случи с нашата памет ако без да искаме оставим референции към някои от тези обекти? 
+Нека си представим, че pre-alloc-ираме голямо парче памет (fs.readFile без encoding) и след това разбием тази памет на малки парчета към конкретни JS обекти. Какво ще се случи с нашата памет, ако без да искаме оставим референции към някои от тези обекти? 
 
 Използването на slice в Node върху буфери не е добра идея, защото може да доведе до memory leaks. Slice не прави копие на array, а създава пойнтъри към паметта, която държи array-я.
 За това е по-добре е да си създадем изцяло нов Buffer.
@@ -489,7 +489,7 @@ Buffer-ите могат да бъдат гадни!
 
    var req = http.request(options, function(resp){
         console.log(resp.statusCode);
-        response.pipe(process.stdout);
+        resp.pipe(process.stdout);
     });
    //req is a WritableStream
    //resp is a ReadableStream
