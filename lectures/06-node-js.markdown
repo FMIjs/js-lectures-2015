@@ -38,7 +38,7 @@ class: middle, center
 ---
 ### Тези 3 неща се решават от V8 чрез:
 
-* Hidden classes (Notion of types in v8).
+* Hidden classes.
 
 * Inline caching or polymorphic inline cache (used with the JIT compiler)
 
@@ -47,6 +47,59 @@ class: middle, center
 * Generational Garbage Collector (memory pools holding objects of different ages)
 
 С това се постига добър memory management
+---
+### Hidden classes
+<img src="../html/img/hidden_classes.png" height="500px">
+
+---
+### Какво ще стане тук?
+```javascript
+var p1 = {
+    x: 2,
+    y: 5
+};
+
+var p2 = {
+    x: 2,
+    y: 5
+};
+
+var p3 = {
+    y: 5,
+    x: 7
+}
+```
+---
+### Arrays
+* Скритите класове на масивите следят типовете на елементите
+* Ако един масив е пълен с doubles той се upgrade-ва (unboxed) към fast double
+* Невнимателно манипулиране на масивите може да причини оптимизационни проблеми (unboxing - boxing)
+
+```javascript 
+var a = new Array();
+a[0] = 77;   // Allocates
+a[1] = 88;
+a[2] = 0.5;   // Allocates, converts
+a[3] = true; // Allocates, converts
+
+var a = [77, 88, 0.5, true]; //Is better
+```
+---
+### Arrays
+
+* Не пре-алокирайте големи масиви (>=100K елементи).
+
+* Ако знаем колко елемента ще се съдържат в масива е хубаво да пре-алокираме.
+
+* Не е хубаво да трием елементи. (Отнася се и за обекти).
+
+* За масиви с различни типове трябва да използваме Array literal.
+---
+class: middle, center
+
+##### Обектните литерали, които имат една и съща структура също използват едни и същи скрити класове.
+
+* За това е хубаво когато правим нови обекти да слагаме в тях всички property-та, които те ще съдържат.
 ---
 ###Какво прави v8?
 
@@ -58,7 +111,7 @@ class: middle, center
 * След компилирането се пуска profiler, който избира "hot" функции, които да бъдат оптимизирани от Crankshaft (optimization compiler)
 
 ---
-class: middle, center
+class: middle, centeri
 ###Какво е NodeJS?
 ---
 class: middle, center
