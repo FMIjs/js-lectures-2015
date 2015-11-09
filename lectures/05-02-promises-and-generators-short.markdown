@@ -426,3 +426,7 @@ function sync(gen) {
     iterable.next();
 }
 ```
+---
+
+class: middle, center
+[Още за генератори](https://strongloop.com/strongblog/how-to-generators-node-js-yield-use-cases/)
