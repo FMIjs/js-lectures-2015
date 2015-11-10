@@ -101,7 +101,7 @@ var FMIjs = (function(){
     BinaryHeap.prototype = Object.create(Array.prototype);
 
     BinaryHeap.prototype.parentIndex = function(i){
-        return Math.floor(i/2);
+        return i === 0 ? 0 : Math.ceil(i/2) - 1;
     };
 
     BinaryHeap.prototype.leftIndex = function(i){
@@ -204,4 +204,3 @@ b.insert(10);
 b.insert(1);
 
 console.log(b.getMinimum()); //-> 1
-
