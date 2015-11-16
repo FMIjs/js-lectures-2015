@@ -15,10 +15,10 @@
 * `POST /register` - expects user as an argument. Creates a new user and returns a key for that user. If the user  exists just returns a 409 response code.
 * `DELETE /book` - expects bookId as an argument. Deletes the bookId if the book exists, otherwise return a 403 response code.
 
-* `GET /all_books?where[${someProp}]=:someVal` - A dynamic filter API endpoint which returns all books by a passed fiter properties
+* `GET /all_books?:someField=:someVal` - A dynamic filter API endpoint which returns all books by a passed fiter properties
 ```
-/all_books?where[rate]=7`
-/all_books?where[title]=The%20Great%20Gatsby`
+/all_books?rate=7`
+/all_books?title=The%20Great%20Gatsby`
 ```
 
 ### Testing
