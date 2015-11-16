@@ -25,3 +25,34 @@
 ```
 curl -H "Content-Type: application/json" --data '{"user": "billy", "author": "Steinbeck",... }' http://localhost:8080/
 ```
+## Task 2 - Async each Function
+### Направете асинхронна функция forEach която
+приема като аргументи:
+* масив от елементи
+* callback функция която се изпълнява върху всеки елемент и има като 2ри аргумент
+    друга callback фунцкия next която да се извика когато трябва да се продължи напред
+```javascript
+forEach(openFiles, function (file, next) {
+
+  // Perform operation on file here.
+  console.log('Processing file ' + file);
+  setTimeout(function () {
+    fs.readFile(file, function (err, file) {
+        if (err) {
+            next(err);
+        }
+        console.log(file);
+        next();
+    });
+  }, 1000)
+
+
+}, function (err) {
+    // if any of the file processing produced an error, err would equal that error
+    if (err) {
+      console.log('A file failed to process', err);
+    } else {
+      console.log('All files have been processed successfully');
+    }
+});
+```
