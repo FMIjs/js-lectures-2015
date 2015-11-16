@@ -17,8 +17,8 @@
 
 * `GET /all_books?:someField=:someVal` - A dynamic filter API endpoint which returns all books by a passed fiter properties
 ```
-/all_books?rate=7`
-/all_books?title=The%20Great%20Gatsby`
+/all_books?rate=7
+/all_books?title=The%20Great%20Gatsby
 ```
 
 ### Testing
@@ -26,29 +26,32 @@
 curl -H "Content-Type: application/json" --data '{"user": "billy", "author": "Steinbeck",... }' http://localhost:8080/
 ```
 ## Task 2 - Async each Function
-### Направете асинхронна функция forEach която
-приема като аргументи:
+### Направете функция forEach, която приема като аргументи:
 * масив от елементи
-* callback функция която се изпълнява върху всеки елемент и има като 2ри аргумент
-    друга callback фунцкия next която да се извика когато трябва да се продължи напред
+* итератор функция, която приема аргументи
+	* пореден елемент от масива
+	* callback фунцкия, която да извика, когато е приключил с обработката на елемента от масива
+* callback функция, приемаща единствен аргумент грешка. Тя ще се извика, когато възникне грешка или всички други callbacks са приключили
+
+Идеята на вашата функция forEach e да осигури паралелна "обработка" на елементи в масива чрез итератор функцията (втория си аргумент)
+
+Пример за употребата:
+
 ```javascript
 forEach(openFiles, function (file, next) {
 
-  // Perform operation on file here.
+  // Асинхронна обработка на елемента от масива
   console.log('Processing file ' + file);
-  setTimeout(function () {
-    fs.readFile(file, function (err, file) {
-        if (err) {
-            next(err);
-        }
-        console.log(file);
-        next();
-    });
-  }, 1000)
-
+  fs.readFile(file, function (err, file) {
+      if (err) {
+          next(err);
+      }
+      console.log(file);
+      next();
+  });
 
 }, function (err) {
-    // if any of the file processing produced an error, err would equal that error
+    // Ако при обработката на елементите се хвърли грешка, тя ще се намира в аргумента err
     if (err) {
       console.log('A file failed to process', err);
     } else {
