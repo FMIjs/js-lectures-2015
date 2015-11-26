@@ -3,6 +3,10 @@
 ---
 # Съдържание
 
+* DOM
+* DOM vs HTML
+* Типове данни
+* Селектиране на елементи
 * Добавяне на събития
   * addEventListener
     * eventObject
@@ -12,6 +16,140 @@
 * Премахване на събития
 * Memory leaks при обработката на събития
 ---
+
+# Document Object Model
+
+API за работа с HTML и XML
+
+Можем да си мислим за HTML като за сериализирана версия на DOM.
+
+---
+
+# DOM, типове елементи
+
+- `document` - коренът на DOM дървото
+- `Element` - елемент в DOM дървото, който има дъщерни елементи
+- `NodeList` - списък с DOM обекти, които могат да бъдат както елементи, така и `text`
+- `Text` - DOM обект, който съдържа само текст, не можа да съдържа елементи
+
+---
+
+## Достъп до елементи в DOM дървото
+
+- `document.createElement(tag_name)` - създава нов елемент
+- `element.childNodes` - достъп до всички дъщерни елементи на даден елемент
+  - върнатият резултат е от тип `NodeList`, не е масив
+- `element.children` - връща всички дъщерни елементи от тип `Element`
+- `element.appendChild(child)` - добавя дъщерен елемент на даден елемент
+- `element.removeChild(child)` - изтрива дъщерен елемент от даден елемент
+
+---
+
+# Атрибути vs полета
+
+в HTML можем да зададем атрибути на различните елементи:
+
+```html
+<input type="checkbox" id="foo">
+```
+
+След като браузърът обработи HTML ще създаде `HTMLInputElement`, който ще има различни полета:
+
+- checked
+- type
+- disabled
+- value
+- ...
+
+---
+
+# Работа с атрибути
+
+- `element.setAttribute(attr_name, value)`
+- `element.getAttribute(attr_name)`
+- `element.removeAttribute(attr_name)`
+
+---
+
+# Селектиране на елементи
+
+- `document.getElementById(id)` - селектира елемент по уникален идентификатор
+- `element.getElementsByTagName(tag_name)` - селектира елементи по име на таг
+- `element.getElementsByClassName(class_name)` - селектира елементи по име на клас
+- `element.querySelectorAll(selector)` - селектира всички елементи, които отговарят на зададения селектор
+- `element.queryselector(selector)` - селектира първият елемент, които отговаря на зададения селектор
+
+---
+
+# CSS селектори
+
+- `element` - селектира всички елементи с име `element`
+- `#element-id` - селектира елемента с идентификатор `element-id`
+- `.class-name` - селектира всички елемент, които използват клас с име `class-name`
+- `[attribute="value"]` - селектира всички елементи, които имат атрибут `attribute` със стойност `value`
+- `parentSelector childSelector` - селектира всички елемент, които съвпадат със селектора `childSelector` и се намират в елементи съвпадащи със селектора `parentSelector`
+
+---
+
+# Примери
+
+```javascript
+document.querySelectorAll('#foo');
+
+document.queryselector('.foo-bar');
+
+document.querySelectorAll('content.container [title="foobar"]:nth-child(2)');
+```
+---
+
+# Shadow DOM
+
+Част от стандарта на WebComponents. Позволява ни по-добра енкапсулация.
+
+- Можем да създадем т.нар. "shadow root", който е корен на поддърво, което се третира по други правила от браузъра
+- Създаденото поддърво е независимо откъм стилове
+
+---
+
+# Shadow DOM
+
+```html
+<template id="greeting">
+  <style>
+    h1 {
+      color: red;
+    }
+  </style>
+  <section>
+    <h1>Hello, <content></content>!</h1>
+  </section>
+</template>
+<div id="foo">Foobar</div>
+```
+
+
+```javascript
+let root = document.querySelector('#foo').createShadowRoot();
+let clone = document.importNode(document.querySelector('#greeting').content, true);
+root.appendChild(clone);
+```
+
+---
+
+# &lt;template/&gt;
+
+Позволява да добавим markup в документа без той да бъде обработван от браузъра.
+
+Не е нужно да използваме `<script/>` тагове за добавяне на темплейти онлайн (както се случваше с Backbone и Handlebars).
+
+---
+
+# &lt;content/&gt;
+
+Позволява да правим "content projection". В случая чрез този елемент, можем да проектираме съдържание от light DOM в shadow DOM.
+
+--
+
 # DOM събития
 
 Обработката на събития в DOM ни помага да реагираме при настъпването на определени "условия".
