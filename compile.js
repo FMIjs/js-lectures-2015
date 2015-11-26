@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-var hogan = require('hogan'),
+var hogan = require('hogan.js'),
     fs = require('fs'),
     path = require('path'),
     Q = require('q'),
