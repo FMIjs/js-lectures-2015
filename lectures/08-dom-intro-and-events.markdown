@@ -74,7 +74,7 @@ API за работа с HTML и XML
 - `element.getElementsByTagName(tag_name)` - селектира елементи по име на таг
 - `element.getElementsByClassName(class_name)` - селектира елементи по име на клас
 - `element.querySelectorAll(selector)` - селектира всички елементи, които отговарят на зададения селектор
-- `element.queryselector(selector)` - селектира първият елемент, които отговаря на зададения селектор
+- `element.querySelector(selector)` - селектира първият елемент, които отговаря на зададения селектор
 
 ---
 
@@ -93,7 +93,7 @@ API за работа с HTML и XML
 ```javascript
 document.querySelectorAll('#foo');
 
-document.queryselector('.foo-bar');
+document.querySelector('.foo-bar');
 
 document.querySelectorAll('content.container [title="foobar"]:nth-child(2)');
 ```
@@ -144,6 +144,24 @@ root.appendChild(clone);
 # Content елемента
 
 Позволява да правим "content projection". В случая чрез този елемент, можем да проектираме съдържание от light DOM в shadow DOM.
+
+---
+
+# Асинхронна обработка на код в браузъра
+
+- `addEventListener` - Добавяне на код обслужващ събития
+- `removeEventListener` - Изтриване на код обслужващ събития
+- `setTimeout` - Добавяне на код, който да бъде изпълнен след определен интервал
+- `clearTimeout`
+- `setInterval` - Добавяне на код, който да бъде изпълняван на регулярни интервали от време
+- `clearInterval`
+- `XMLHttpRequest`
+- `fetch`
+- `Promise`
+- `requestAnimationFrame`
+- `WebSocket`
+- `WebWorkers`
+- и други
 
 ---
 
