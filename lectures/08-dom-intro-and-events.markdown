@@ -136,7 +136,7 @@ root.appendChild(clone);
 
 ---
 
-# &lt;template/&gt;
+# Template елемента
 
 Позволява да добавим markup в документа без той да бъде обработван от браузъра.
 
@@ -144,7 +144,7 @@ root.appendChild(clone);
 
 ---
 
-# &lt;content/&gt;
+# Content елемента
 
 Позволява да правим "content projection". В случая чрез този елемент, можем да проектираме съдържание от light DOM в shadow DOM.
 
