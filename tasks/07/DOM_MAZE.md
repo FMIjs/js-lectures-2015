@@ -1,4 +1,4 @@
-1. Отворете следната връзка https://jsfiddle.net/w2jkxq0p/
+1. Отворете следната връзка https://jsfiddle.net/w2jkxq0p/1/
 2. На базата на API описан в JSFiddle реализирайте:
   - `drawMaze(maze, parentNode)` - метод, който рисува лабиринта в елемента `parentNode`.
   - `traverseMaze(maze, start, target, strategy)` - метод, който на базата на подадените аргументи открива път в лабиринта и го рисува на екрана.
