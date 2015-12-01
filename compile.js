@@ -4,7 +4,7 @@ var hogan = require('hogan.js'),
     fs = require('fs'),
     path = require('path'),
     Q = require('q'),
-    ncp = require('ncp').ncp,
+    cpr = require('cpr').cpr,
     lecturesDir = './lectures',
     compiledDir = './compiled',
     layoutFilename = './layout.html.mustache',
@@ -76,11 +76,14 @@ loadLayout().then(function (layout) {
       });
     });
 
-    ncp('html', 'compiled', function (error) {
-      if (error) {
-        console.error('Error copying src and img folders: ');
-        console.error(error);
-      }
-    });
+    cpr('html', 'compiled', {
+        overwrite: true,
+        confirm: true
+      },function (error) {
+        if (error) {
+          console.error('Error copying src and img folders: ');
+          console.error(error);
+        }
+      });
   });
 });
