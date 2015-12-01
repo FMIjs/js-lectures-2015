@@ -79,7 +79,7 @@ loadLayout().then(function (layout) {
     cpr('html', 'compiled', {
         overwrite: true,
         confirm: true
-      },function (error) {
+      }, function (error) {
         if (error) {
           console.error('Error copying src and img folders: ');
           console.error(error);
