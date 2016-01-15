@@ -1,0 +1,164 @@
+class: center,middle
+#d3.js
+
+.center[
+data driven documents
+]
+---
+.center[
+#data driven documents
+]
+.left-column[
+* реактивна библиотека
+
+* на крактко: съпоставя множества от структурирани данни с SVG множества
+
+* идва с иструменти като
+    - подсистема за избиране на елементи
+    - скали
+    - механизъм за различаване на разликите про промяна на данните
+
+* вероятно най-съществената библиотека за работа с уеб графика
+
+* един от най-важните инструментариуми маред с след jQuery
+
+]
+
+---
+
+```JS
+
+var dataset = [20, 5, 10, 0, 50];
+
+d3.select('body')
+  .selectAll('p')  // selection
+  .data(dataset)  // data binding
+  .enter()
+    .append('p')  // dom manipulation
+    .attr('class', 'paragraph')  // static property
+    .text(function(d, i) {  // dynamic property
+      return i + ': my value is ' + d;
+    })
+    .style('font-size', function(d) {
+      return (d / 2 + 25) + 'px';  // maps to [25, 50]
+    });
+
+```
+
+[https://scottcheng.github.io/d3js-101/#/programming-pattern]
+
+---
+
+.center[
+#data/enter/exit
+
+* data - обновяваме данните и в следствие на тях...:
+
+* enter - новите елементи, които ще цъфнат
+
+* exit - елементите, които си отиват
+
+
+<svg width="720" height="240"><g transform="translate(0,128)"><g transform="translate(300)"><circle r="110" style="fill: rgb(49, 130, 189);"></circle><text y="-120" dy=".35em" text-anchor="middle" style="font-weight: bold;">Data</text><text x="-50" dy=".35em" text-anchor="middle">Enter</text></g><text x="360" dy=".35em" text-anchor="middle">Update</text><g transform="translate(420)"><circle r="110" style="fill: rgb(230, 85, 13);"></circle><text y="-120" dy=".35em" text-anchor="middle" style="font-weight: bold;">Elements</text><text x="50" dy=".35em" text-anchor="middle">Exit</text></g></g></svg></svg>
+
+[http://bost.ocks.org/mike/join/]
+
+]
+
+---
+
+.center[
+#data joins
+
+* ^^^ така се нарича съпоставянето на елементи и данни
+
+* вместо да казваме на D3 как да направи нещо му казваме какво искаме
+
+* тоест -> пишем декларативен код...
+
+* ...и работим с хипероперации в/у изброими(подредени) мулти-множества
+
+```JS
+/* add many circles according to data */
+
+let circle = svg.selectAll("circle")
+    .data(data)
+
+circle.exit().remove();
+
+circle.enter().append("circle")
+    .attr("r", 2.5);
+
+circle
+    .attr("cx", function(d) { return d.x; })
+    .attr("cy", function(d) { return d.y; });
+
+```
+
+]
+
+---
+
+.center[
+#скали
+
+* функции, които изобразяват данни в накакъв друг домен,
+
+* ...запазвайки пропорциите.
+
+* промяната на скалите няма да предизвика автоматична промяна на на гафикaта
+
+
+```JS
+
+var x = d3.time.scale()
+    .range([10, 280])
+
+```
+]
+---
+
+.center[
+
+#range / domain
+
+* range - обемът на пиксели от екрана, които искаме да ... заангажираме
+* ***Внимание - в d3 величните за y са обърнати. нулата е в горната част на екрана.***
+* domain - областта на допустимите велични за входните данни
+
+#видове скали
+
+* Quantitative Scales - за непрекъснати входни данни като числени велиничи
+    * Линейни
+        - d3.scale.linear
+        - d3.scale.identity
+        - d3.scale.sqrt
+        - d3.scale.pow
+        - d3.scale.log
+    * Дискретни
+        - d3.scale.quantize
+        - d3.scale.qunatile
+    * Прагови
+        - d3.scale.threshold
+
+* Ordinal Scales - за дискретни данни като имена, категории, цветове
+
+* Time Scales - за времеви области/домени
+
+]
+
+---
+
+.center[
+#transition
+]
+.left-column[
+* може да се анимират промените по елементите
+* анимацията може да се контролира
+]
+
+---
+
+* A Technical Intro - A Technical Intro
+* D3@HN - https://hn.algolia.com/?query=d3
+]
